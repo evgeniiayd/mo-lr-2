@@ -8,6 +8,19 @@ from bullet import Bullet
 from alien import Alien
 from button import Button
 from scoreboard import Scoreboard
+from bonus import Bonus
+
+import pickle
+
+
+def save_game(data, filename="savefile.pkl"):
+    with open(filename, "wb") as f:
+        pickle.dump(data, f)
+
+
+def load_game(filename="savefile.pkl"):
+    with open(filename, "rb") as f:
+        return pickle.load(f)
 
 
 class AlienInvasion:
@@ -22,10 +35,15 @@ class AlienInvasion:
 
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
+        self.alien_hit = pygame.mixer.Sound("sound/scream.mp3")
+        self.ship_hit = pygame.mixer.Sound("sound/ship_hit.mp3")
+        self.shoot = pygame.mixer.Sound("sound/shoot.mp3")
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+
+        self.bonus = None
 
         self._create_fleet()
         self.play_button = Button(self, "Play")
@@ -39,6 +57,8 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
+                if self.bonus:
+                    self._update_bonus()
 
             self._update_screen()
 
@@ -63,7 +83,20 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             sys.exit()
         elif event.key == pygame.K_SPACE:
+            self.shoot.play()
             self._fire_bullet()
+        elif event.key == pygame.K_s:
+            game_data = {"level": self.stats.level, "score": self.stats.score, "lives": self.stats.ships_left}
+            save_game(game_data)
+        elif event.key == pygame.K_l:
+            data = load_game()
+            self.stats.level = data['level']
+            self.sb.prep_level()
+            self.stats.score = data['score']
+            self.sb.prep_score()
+            self.stats.ships_left = data['lives']
+            self.sb.prep_ships()
+            self._update_screen()
 
     def _check_keyup_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -75,6 +108,16 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+
+    def _update_bonus(self):
+        self.bonus.update()
+
+        if pygame.Rect.colliderect(self.ship.rect, self.bonus.rect):
+            self.stats.ships_left += 1
+            self.sb.prep_ships()
+            self.bonus = None
+        elif self.bonus.rect.top <= 0:
+            self.bonus = None
 
     def _update_bullets(self):
         self.bullets.update()
@@ -91,6 +134,7 @@ class AlienInvasion:
 
         if collisions:
             for aliens in collisions.values():
+                self.alien_hit.play()
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
 
@@ -101,6 +145,8 @@ class AlienInvasion:
 
             self.stats.level += 1
             self.sb.prep_level()
+
+            self.bonus = Bonus(self)
 
     def _create_fleet(self):
         alien = Alien(self)
@@ -146,6 +192,7 @@ class AlienInvasion:
 
     def _ship_hit(self):
         if self.stats.ships_left > 0:
+            self.ship_hit.play()
             self.stats.ships_left -= 1
             self.sb.prep_ships()
 
@@ -190,6 +237,8 @@ class AlienInvasion:
         """Обновляется изображение на экране"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+        if self.bonus:
+            self.bonus.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
