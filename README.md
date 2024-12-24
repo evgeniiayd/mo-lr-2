@@ -1,4 +1,4 @@
-# Яблонская Евгения, ЛР 2
+# Яблонская Евгения, ПР 2 и ПР 3
 
 Игра Alien Invasion.
 В игре реализованы возможности:
@@ -15,3 +15,6 @@ python alien-invasion.py
 
 В действии:
 ![image](https://github.com/user-attachments/assets/ea876d37-31b7-42c9-8bfd-10b4021ce7e4)
+
+Результат запуска игры с помощью сборки на Windows из файла main.exe:
+![image](https://github.com/user-attachments/assets/737e9846-91e0-4d3c-97bf-8b7b3edc7073)
