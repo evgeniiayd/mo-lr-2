@@ -2,31 +2,44 @@ import pygame
 from pygame.sprite import Sprite
 
 
+import pygame
+from pygame.sprite import Sprite
+
 class Bullet(Sprite):
-    """A class to manage bullets fired from the ship."""
+    """Класс для управления пулями, выстреливаемыми из корабля."""
 
     def __init__(self, ai_game):
-        """Create a bullet object, at the ship's current position."""
+        """
+        Создает объект пули в текущей позиции корабля.
+
+        Args:
+            ai_game (object): Экземпляр основного игрового класса, содержащий настройки и экран.
+        """
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.color = self.settings.bullet_color
 
-        # Create bullet rect at (0, 0), then set correct position.
+        # Создаем прямоугольник пули в позиции (0, 0), затем устанавливаем правильную позицию.
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
                                 self.settings.bullet_height)
         self.rect.midtop = ai_game.ship.rect.midtop
 
-        # Store a decimal value for the bullet's position.
+        # Храним десятичное значение для позиции пули.
         self.y = float(self.rect.y)
 
     def update(self):
-        """Move the bullet up the screen."""
-        # Update the decimal position of the bullet.
+        """
+        Перемещает пулю вверх по экрану.
+        """
+        # Обновляем десятичную позицию пули.
         self.y -= self.settings.bullet_speed
-        # Update the rect position.
+        # Обновляем позицию прямоугольника.
         self.rect.y = self.y
 
     def draw_bullet(self):
-        """Draw the bullet to the screen."""
+        """
+        Рисует пулю на экране.
+        """
         pygame.draw.rect(self.screen, self.color, self.rect)
+

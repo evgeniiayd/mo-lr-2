@@ -14,19 +14,43 @@ from bonus import Bonus
 import pickle
 
 
+import pickle
+import pygame
+import os
+import sys
+from time import sleep
+
 def save_game(data, filename="savefile.pkl"):
+    """
+    Сохраняет данные игры в файл.
+
+    Args:
+        data (dict): Данные игры, которые нужно сохранить.
+        filename (str, optional): Имя файла для сохранения. По умолчанию "savefile.pkl".
+    """
     with open(filename, "wb") as f:
         pickle.dump(data, f)
 
-
 def load_game(filename="savefile.pkl"):
+    """
+    Загружает данные игры из файла.
+
+    Args:
+        filename (str, optional): Имя файла для загрузки. По умолчанию "savefile.pkl".
+
+    Returns:
+        dict: Загруженные данные игры.
+    """
     with open(filename, "rb") as f:
         return pickle.load(f)
 
-
 class AlienInvasion:
+    """Класс для управления игрой Alien Invasion."""
+
     def __init__(self):
-        # Инициализирует игру и создает игровые ресурсы
+        """
+        Инициализирует игру и создает игровые ресурсы.
+        """
         pygame.init()
         self.settings = Settings()
 
@@ -37,15 +61,14 @@ class AlienInvasion:
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
 
-        # Определение пути к ресурсу
-        resource_path = os.path.join('../resources', 'scream.mp3')
-        # Загрузка звука
+        # Определение пути к ресурсам звуков
+        resource_path = os.path.join('resources', 'scream.mp3')
         self.alien_hit = pygame.mixer.Sound(resource_path)
 
-        resource_path_2 = os.path.join('../resources', 'ship_hit.mp3')
+        resource_path_2 = os.path.join('resources', 'ship_hit.mp3')
         self.ship_hit = pygame.mixer.Sound(resource_path_2)
 
-        resource_path_3 = os.path.join('../resources', 'shoot.mp3')
+        resource_path_3 = os.path.join('resources', 'shoot.mp3')
         self.shoot = pygame.mixer.Sound(resource_path_3)
 
         self.ship = Ship(self)
@@ -58,7 +81,9 @@ class AlienInvasion:
         self.play_button = Button(self, "Play")
 
     def run_game(self):
-        # Запуск основного цикла игры
+        """
+        Запускает основной цикл игры.
+        """
         while True:
             self._check_events()
 
@@ -72,7 +97,9 @@ class AlienInvasion:
             self._update_screen()
 
     def _check_events(self):
-        """Обрабатывает нажатия и события мыши"""
+        """
+        Обрабатывает нажатия и события мыши.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -85,6 +112,12 @@ class AlienInvasion:
                 self._check_play_button(mouse_pos)
 
     def _check_keydown_events(self, event):
+        """
+        Обрабатывает события нажатия клавиш.
+
+        Args:
+            event (pygame.event.Event): Событие нажатия клавиши.
+        """
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
@@ -108,17 +141,29 @@ class AlienInvasion:
             self._update_screen()
 
     def _check_keyup_events(self, event):
+        """
+        Обрабатывает события отпускания клавиш.
+
+        Args:
+            event (pygame.event.Event): Событие отпускания клавиши.
+        """
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
     def _fire_bullet(self):
+        """
+        Создает новый снаряд и добавляет его в группу снарядов.
+        """
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
     def _update_bonus(self):
+        """
+        Обновляет бонус и проверяет его коллизию с кораблем.
+        """
         self.bonus.update()
 
         if pygame.Rect.colliderect(self.ship.rect, self.bonus.rect):
@@ -129,6 +174,9 @@ class AlienInvasion:
             self.bonus = None
 
     def _update_bullets(self):
+        """
+        Обновляет состояние снарядов и проверяет их коллизию с пришельцами.
+        """
         self.bullets.update()
 
         for bullet in self.bullets.copy():
@@ -138,8 +186,10 @@ class AlienInvasion:
         self._check_bullet_alien_collisions()
 
     def _check_bullet_alien_collisions(self):
-        collisions = pygame.sprite.groupcollide(
-                self.bullets, self.aliens, True, True)
+        """
+        Проверяет коллизии между снарядами и пришельцами.
+        """
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if collisions:
             for aliens in collisions.values():
@@ -158,6 +208,9 @@ class AlienInvasion:
             self.bonus = Bonus(self)
 
     def _create_fleet(self):
+        """
+        Создает флот пришельцев.
+        """
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.width - (2 * alien_width)
@@ -172,6 +225,13 @@ class AlienInvasion:
                 self._create_alien(alien_number, row_number)
 
     def _create_alien(self, alien_number, row_number):
+        """
+        Создает пришельца и добавляет его в группу пришельцев.
+
+        Args:
+            alien_number (int): Номер пришельца в ряду.
+            row_number (int): Номер ряда.
+        """
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
@@ -180,6 +240,9 @@ class AlienInvasion:
         self.aliens.add(alien)
 
     def _update_aliens(self):
+        """
+        Обновляет состояние пришельцев и проверяет коллизии с кораблем.
+        """
         self._check_fleet_edges()
         self.aliens.update()
 
@@ -189,17 +252,26 @@ class AlienInvasion:
         self._check_aliens_bottom()
 
     def _check_fleet_edges(self):
+        """
+        Проверяет, достигли ли пришельцы края экрана.
+        """
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
 
     def _change_fleet_direction(self):
+        """
+        Меняет направление флота пришельцев.
+        """
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
     def _ship_hit(self):
+        """
+        Обрабатывает событие, когда пришелец сталкивается с кораблем.
+        """
         if self.stats.ships_left > 0:
             self.ship_hit.play()
             self.stats.ships_left -= 1
@@ -217,6 +289,9 @@ class AlienInvasion:
             pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
+        """
+        Проверяет, достигли ли пришельцы нижней границы экрана.
+        """
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
@@ -224,6 +299,12 @@ class AlienInvasion:
                 break
 
     def _check_play_button(self, mouse_pos):
+        """
+        Проверяет, нажата ли кнопка "Играть".
+
+        Args:
+            mouse_pos (tuple): Позиция мыши в момент нажатия.
+        """
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             self.settings.initialize_dynamic_settings()
@@ -243,7 +324,9 @@ class AlienInvasion:
             pygame.mouse.set_visible(False)
 
     def _update_screen(self):
-        """Обновляется изображение на экране"""
+        """
+        Обновляет изображение на экране.
+        """
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         if self.bonus:
