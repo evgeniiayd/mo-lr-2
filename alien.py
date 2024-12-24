@@ -13,7 +13,7 @@ class Alien(Sprite):
         self.settings = ai_game.settings
 
         # Определение пути к ресурсу
-        resource_path = os.path.join('resources', 'alien1.jpg')
+        resource_path = os.path.join('./resources', 'alien1.jpg')
         # Загрузка изображения
         self.image = pygame.image.load(resource_path)
         self.rect = self.image.get_rect()

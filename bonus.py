@@ -12,7 +12,7 @@ class Bonus(Sprite):
         self.screen_rect = ai_game.screen.get_rect()
 
         # Определение пути к ресурсу
-        resource_path = os.path.join('resources', 'potion.png')
+        resource_path = os.path.join('./resources', 'potion.png')
         # Загрузка изображения
         self.image = pygame.image.load(resource_path)
         self.rect = self.image.get_rect()

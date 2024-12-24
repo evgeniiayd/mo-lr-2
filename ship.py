@@ -14,7 +14,7 @@ class Ship(Sprite):
 
         # Загружает изображение корабля и получает прямоугольник
         # Определение пути к ресурсу
-        resource_path = os.path.join('resources', 'ship2.png')
+        resource_path = os.path.join('./resources', 'ship2.png')
         # Загрузка изображения
         self.image = pygame.image.load(resource_path)
         self.rect = self.image.get_rect()
