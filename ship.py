@@ -1,3 +1,4 @@
+import os
 import pygame
 from pygame.sprite import Sprite
 
@@ -12,7 +13,10 @@ class Ship(Sprite):
         self.screen_rect = ai_game.screen.get_rect()
 
         # Загружает изображение корабля и получает прямоугольник
-        self.image = pygame.image.load('images/ship2.png')
+        # Определение пути к ресурсу
+        resource_path = os.path.join('resources', 'ship2.png')
+        # Загрузка изображения
+        self.image = pygame.image.load(resource_path)
         self.rect = self.image.get_rect()
 
         # Каждый новый корабль появляется у нижнего края экрана

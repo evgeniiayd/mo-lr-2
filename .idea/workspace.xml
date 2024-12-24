@@ -5,10 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="237177f6-aeb3-4fbc-8e21-a3be86a26517" name="Changes" comment="commit all">
-      <change afterPath="$PROJECT_DIR$/bonus.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alien_invasion.py" beforeDir="false" afterPath="$PROJECT_DIR$/alien_invasion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alien.py" beforeDir="false" afterPath="$PROJECT_DIR$/alien.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alien_invasion.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bonus.py" beforeDir="false" afterPath="$PROJECT_DIR$/bonus.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/alien.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/alien1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/potion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ship.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ship.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ship1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ship2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ship.py" beforeDir="false" afterPath="$PROJECT_DIR$/ship.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/scream.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/ship_hit.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/shoot.mp3" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +53,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/evgen/Desktop/study/V-sem/МО/alien-invasion&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/evgen/Desktop/study/V-sem/МО/ЛР_4&quot;
   }
 }</component>
   <component name="RunManager">
@@ -85,7 +96,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735053585818</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="commit all">
+      <option name="closed" value="true" />
+      <created>1735061788635</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1735061788635</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

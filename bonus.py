@@ -1,3 +1,4 @@
+import os
 import pygame
 from pygame.sprite import Sprite
 
@@ -10,7 +11,10 @@ class Bonus(Sprite):
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
 
-        self.image = pygame.image.load('images/potion.png')
+        # Определение пути к ресурсу
+        resource_path = os.path.join('resources', 'potion.png')
+        # Загрузка изображения
+        self.image = pygame.image.load(resource_path)
         self.rect = self.image.get_rect()
 
         self.rect.midtop = self.screen_rect.midtop
